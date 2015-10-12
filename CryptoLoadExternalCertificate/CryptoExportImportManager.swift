@@ -148,9 +148,8 @@ class CryptoExportImportManager: NSObject {
     /**
      * This function prepares a RSA public key generated with Apple SecKeyGeneratePair to be exported
      * and used outisde iOS, be it openSSL, PHP, Perl, whatever. By default Apple exports RSA public 
-     * keys in PKCS#1 format. If we want to use it on OpenSSL, PHP or almost anywhere outside iOS, we
-     * need to remove the PKCS#1 ASN.1 wrapping header and substitute it with a PKCS#8 ASN.1 header.
-     * Returns a DER representation of the key.
+     * keys in a very raw format. If we want to use it on OpenSSL, PHP or almost anywhere outside iOS, we
+     * need to remove add the full PKCS#1 ASN.1 wrapping. Returns a DER representation of the key.
      */
     func exportRSAPublicKeyToDER(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> NSData {
         // first we create the space for the ASN.1 header and decide about its length
@@ -185,9 +184,8 @@ class CryptoExportImportManager: NSObject {
     /**
      * This function prepares a RSA public key generated with Apple SecKeyGeneratePair to be exported
      * and used outisde iOS, be it openSSL, PHP, Perl, whatever. By default Apple exports RSA public
-     * keys in PKCS#1 format. If we want to use it on OpenSSL, PHP or almost anywhere outside iOS, we
-     * need to remove the PKCS#1 ASN.1 wrapping header and substitute it with a PKCS#8 ASN.1 header.
-     * Returns a DER representation of the key.
+     * keys in a very raw format. If we want to use it on OpenSSL, PHP or almost anywhere outside iOS, we
+     * need to remove add the full PKCS#1 ASN.1 wrapping. Returns a DER representation of the key.
      */
     func exportRSAPublicKeyToPEM(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> String {
         return PEMKeyFromDERKey(exportRSAPublicKeyToDER(rawPublicKeyBytes, keyType: keyType, keySize: keySize))
