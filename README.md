@@ -61,6 +61,12 @@ if let exportablePEMKey = exportImportManager.exportPublicKeyToPEM(pubKeyData, k
 
 > Note: contrary to what's specified in the documentation for kSecECCurveSecp256r1, the curve that needs to be specified in order for the generated key to be valid is <strong>not</strong> a prime256v1 (aka secp256r1), but a ansiX9p256r1 (OID 1 2 840 10045 3 1 7).
 
+## Checking the keys:
+The project comes also with a sample PHP file that would read a key obtained from the CryptoImportExportManager. You just need to copy the PEM formatted output from the export controller, save it  in a file, and then call readkey.php:
+
+```
+php readkey.php public_key_file.pem
+```
 ## License
 
 The MIT License (MIT)
