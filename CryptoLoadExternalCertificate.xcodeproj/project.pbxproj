@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6686BBC41BC3E2A000E9D1CA /* CryptoExportImportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6686BBC31BC3E2A000E9D1CA /* CryptoExportImportManager.swift */; };
+		6686BBC81BC3F06D00E9D1CA /* certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = 6686BBC71BC3F06D00E9D1CA /* certificate.der */; };
 		668B94D81BC3D19F00913B83 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668B94D71BC3D19F00913B83 /* AppDelegate.swift */; };
 		668B94DA1BC3D19F00913B83 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668B94D91BC3D19F00913B83 /* ViewController.swift */; };
 		668B94DD1BC3D19F00913B83 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 668B94DB1BC3D19F00913B83 /* Main.storyboard */; };
 		668B94DF1BC3D19F00913B83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 668B94DE1BC3D19F00913B83 /* Assets.xcassets */; };
 		668B94E21BC3D19F00913B83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 668B94E01BC3D19F00913B83 /* LaunchScreen.storyboard */; };
+		66B460A61BCA9886000FFCCE /* ImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B460A51BCA9886000FFCCE /* ImportViewController.swift */; };
+		66B460A81BCA988E000FFCCE /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B460A71BCA988E000FFCCE /* ExportViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6686BBC31BC3E2A000E9D1CA /* CryptoExportImportManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoExportImportManager.swift; sourceTree = "<group>"; };
+		6686BBC71BC3F06D00E9D1CA /* certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = certificate.der; sourceTree = "<group>"; };
 		668B94D41BC3D19F00913B83 /* CryptoLoadExternalCertificate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoLoadExternalCertificate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		668B94D71BC3D19F00913B83 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		668B94D91BC3D19F00913B83 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +28,8 @@
 		668B94DE1BC3D19F00913B83 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		668B94E11BC3D19F00913B83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		668B94E31BC3D19F00913B83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		66B460A51BCA9886000FFCCE /* ImportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportViewController.swift; sourceTree = "<group>"; };
+		66B460A71BCA988E000FFCCE /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +62,58 @@
 		668B94D61BC3D19F00913B83 /* CryptoLoadExternalCertificate */ = {
 			isa = PBXGroup;
 			children = (
-				668B94D71BC3D19F00913B83 /* AppDelegate.swift */,
-				668B94D91BC3D19F00913B83 /* ViewController.swift */,
-				668B94DB1BC3D19F00913B83 /* Main.storyboard */,
-				668B94DE1BC3D19F00913B83 /* Assets.xcassets */,
-				668B94E01BC3D19F00913B83 /* LaunchScreen.storyboard */,
-				668B94E31BC3D19F00913B83 /* Info.plist */,
+				66B460A41BCA9853000FFCCE /* Model */,
+				66B460A31BCA9844000FFCCE /* Storyboards */,
+				66B460A21BCA9829000FFCCE /* App */,
+				66B460A11BCA97C7000FFCCE /* Resources & Assets */,
+				66B460A01BCA97BB000FFCCE /* View Controllers */,
 			);
 			path = CryptoLoadExternalCertificate;
+			sourceTree = "<group>";
+		};
+		66B460A01BCA97BB000FFCCE /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				668B94D91BC3D19F00913B83 /* ViewController.swift */,
+				66B460A51BCA9886000FFCCE /* ImportViewController.swift */,
+				66B460A71BCA988E000FFCCE /* ExportViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		66B460A11BCA97C7000FFCCE /* Resources & Assets */ = {
+			isa = PBXGroup;
+			children = (
+				6686BBC71BC3F06D00E9D1CA /* certificate.der */,
+				668B94DE1BC3D19F00913B83 /* Assets.xcassets */,
+			);
+			name = "Resources & Assets";
+			sourceTree = "<group>";
+		};
+		66B460A21BCA9829000FFCCE /* App */ = {
+			isa = PBXGroup;
+			children = (
+				668B94D71BC3D19F00913B83 /* AppDelegate.swift */,
+				668B94E31BC3D19F00913B83 /* Info.plist */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		66B460A31BCA9844000FFCCE /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				668B94DB1BC3D19F00913B83 /* Main.storyboard */,
+				668B94E01BC3D19F00913B83 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		66B460A41BCA9853000FFCCE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6686BBC31BC3E2A000E9D1CA /* CryptoExportImportManager.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,6 +176,7 @@
 				668B94E21BC3D19F00913B83 /* LaunchScreen.storyboard in Resources */,
 				668B94DF1BC3D19F00913B83 /* Assets.xcassets in Resources */,
 				668B94DD1BC3D19F00913B83 /* Main.storyboard in Resources */,
+				6686BBC81BC3F06D00E9D1CA /* certificate.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,8 +187,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6686BBC41BC3E2A000E9D1CA /* CryptoExportImportManager.swift in Sources */,
 				668B94DA1BC3D19F00913B83 /* ViewController.swift in Sources */,
 				668B94D81BC3D19F00913B83 /* AppDelegate.swift in Sources */,
+				66B460A61BCA9886000FFCCE /* ImportViewController.swift in Sources */,
+				66B460A81BCA988E000FFCCE /* ExportViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +339,7 @@
 				668B94E81BC3D19F00913B83 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

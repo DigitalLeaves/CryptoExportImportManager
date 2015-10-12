@@ -1,0 +1,301 @@
+//
+//  CryptoExportImportManager
+//  CryptoExportImportManager
+//
+//  Created by Ignacio Nieto Carvajal on 6/10/15.
+//  Copyright © 2015 Ignacio Nieto Carvajal. All rights reserved.
+//
+
+import UIKit
+
+/* 
+
+EC keys: http://www.opensource.apple.com/source/security_certtool/security_certtool-55103/src/dumpasn1.cfg
+
+EC param 1
+OID = 06 07 2A 86 48 CE 3D 02 01
+Comment = ANSI X9.62 public key type
+Description = ecPublicKey (1 2 840 10045 2 1)
+
+EC param 2
+OID = 06 08 2A 86 48 CE 3D 03 01 07
+Comment = ANSI X9.62 named elliptic curve
+Description = ansiX9p256r1 (1 2 840 10045 3 1 7)
+
+OID = 06 05 2B 81 04 00 22
+Comment = SECG (Certicom) named elliptic curve
+Description = secp384r1 (1 3 132 0 34)
+
+OID = 06 05 2B 81 04 00 23
+Comment = SECG (Certicom) named elliptic curve
+Description = secp521r1 (1 3 132 0 35)
+
+EC params sequence: public key + curve 256r1
+30 13 06 07 2A 86 48 CE 3D 02 01 06 08 2A 86 48 CE 3D 03 01 07
+*/
+
+// SECP256R1 EC public key header (length + EC params (sequence) + bitstring
+private let kCryptoExportImportManagerSecp256r1CurveLen = 256
+private let kCryptoExportImportManagerSecp256r1header: [UInt8] = [0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01, 0x06, 0x08, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07, 0x03, 0x42, 0x00]
+private let kCryptoExportImportManagerSecp256r1headerLen = 26
+
+private let kCryptoExportImportManagerSecp384r1CurveLen = 384
+private let kCryptoExportImportManagerSecp384r1header: [UInt8] = [0x30, 0x76, 0x30, 0x10, 0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01, 0x06, 0x05, 0x2B, 0x81, 0x04, 0x00, 0x22, 0x03, 0x62, 0x00]
+private let kCryptoExportImportManagerSecp384r1headerLen = 23
+
+private let kCryptoExportImportManagerSecp521r1CurveLen = 521
+private let kCryptoExportImportManagerSecp521r1header: [UInt8] = [0x30, 0x81, 0x9B, 0x30, 0x10, 0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01, 0x06, 0x05, 0x2B, 0x81, 0x04, 0x00, 0x23, 0x03, 0x81, 0x86, 0x00]
+private let kCryptoExportImportManagerSecp521r1headerLen = 25
+
+/*
+
+RSA keys: http://www.opensource.apple.com/source/security_certtool/security_certtool-55103/src/dumpasn1.cfg
+
+OID = 06 09 2A 86 48 86 F7 0D 01 01 01
+Comment = PKCS #1
+Description = rsaEncryption (1 2 840 113549 1 1 1)
+
+NULL byte: 05 00
+*/
+
+// RSA OID header
+private let kCryptoExportImportManagerRSAOIDHeader: [UInt8] = [0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00]
+private let kCryptoExportImportManagerRSAOIDHeaderLength = 15
+
+// ASN.1 encoding parameters.
+private let kCryptoExportImportManagerASNHeaderSequenceMark: UInt8 = 48 // 0x30
+private let kCryptoExportImportManagerASNHeaderIntegerMark: UInt8 = 02 // 0x32
+private let kCryptoExportImportManagerASNHeaderBitstringMark: UInt8 = 03 //0x03
+private let kCryptoExportImportManagerASNHeaderNullMark: UInt8 = 05 //0x05
+private let kCryptoExportImportManagerASNHeaderRSAEncryptionObjectMark: UInt8 = 06 //0x06
+private let kCryptoExportImportManagerExtendedLengthMark: UInt8 = 128  // 0x80
+private let kCryptoExportImportManagerASNHeaderLengthForRSA = 15
+
+// PEM encoding constants
+private let kCryptoExportImportManagerPublicKeyInitialTag = "-----BEGIN PUBLIC KEY-----\n"
+private let kCryptoExportImportManagerPublicKeyFinalTag = "-----END PUBLIC KEY-----"
+private let kCryptoExportImportManagerPublicNumberOfCharactersInALine = 64
+
+/** 
+ * This class exists due to the easy and intuitive way of using public keys generated outside iOS in 
+ * the Security framework and CommonCrypto tools (yes, I'm being sarcastic here).
+ * CryptoCertificateImportManager is in charge of importing a certificate and obtaining a valid key 
+ * reference to use in any of SecKey operations (SecKeyEncrypt, SecKeyRawVerify...).
+ * As far as I know, any other way of importing and using public keys from the outside is not
+ * recommended: https://devforums.apple.com/message/301532#301532
+ */
+class CryptoExportImportManager: NSObject {
+    // MARK: - Import methods.
+    
+    /**
+     * Extracts the public key from a X.509 certificate and returns a valid SecKeyRef that can be 
+     * used in any of SecKey operations (SecKeyEncrypt, SecKeyRawVerify...).
+     * Receives the certificate data in DER format.
+     */
+    func importPublicKeyReferenceFromDERCertificate(certData: NSData) -> SecKeyRef? {
+        // first we create the certificate reference
+        guard let certRef = SecCertificateCreateWithData(nil, certData) else { return nil }
+        print("Successfully generated a valid certificate reference from the data.")
+
+        // now create a SecTrust structure from the certificate where to extract the key from
+        var secTrust: SecTrustRef?
+        let secTrustStatus = SecTrustCreateWithCertificates(certRef, nil, &secTrust)
+        print("Generating a SecTrust reference from the certificate: \(secTrustStatus)")
+        if secTrustStatus != errSecSuccess { return nil }
+        
+        // now evaluate the certificate.
+        var resultType: SecTrustResultType = UInt32(0) // result will be ignored.
+        let evaluateStatus = SecTrustEvaluate(secTrust!, &resultType)
+        print("Evaluating the obtained SecTrust reference: \(evaluateStatus)")
+        if evaluateStatus != errSecSuccess { return nil }
+        
+        // lastly, once evaluated, we can export the public key from the certificate leaf.
+        let publicKeyRef = SecTrustCopyPublicKey(secTrust!)
+        print("Got public key reference: \(publicKeyRef)")
+        return publicKeyRef
+    }
+    
+    // MARK: - Export methods.
+    
+    /**
+     * Exports a key retrieved from the keychain so it can be used outside iOS (i.e: in OpenSSL).
+     * Returns a DER representation of the key.
+     */
+    func exportPublicKeyToDER(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> NSData? {
+        if keyType == kSecAttrKeyTypeEC as String {
+            return exportECPublicKeyToDER(rawPublicKeyBytes, keyType: keyType, keySize: keySize)
+        } else if keyType == kSecAttrKeyTypeRSA as String {
+            return exportRSAPublicKeyToDER(rawPublicKeyBytes, keyType: keyType, keySize: keySize)
+        }
+        // unknown key type? return nil
+        return nil
+    }
+    
+    /**
+     * Exports a key retrieved from the keychain so it can be used outside iOS (i.e: in OpenSSL).
+     * Returns a PEM representation of the key.
+     */
+    func exportPublicKeyToPEM(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> String? {
+        if keyType == kSecAttrKeyTypeEC as String {
+            return exportECPublicKeyToPEM(rawPublicKeyBytes, keyType: keyType, keySize: keySize)
+        } else if keyType == kSecAttrKeyTypeRSA as String {
+            return exportRSAPublicKeyToPEM(rawPublicKeyBytes, keyType: keyType, keySize: keySize)
+        }
+        // unknown key type? return nil
+        return nil
+    }
+    
+    /**
+     * This function prepares a RSA public key generated with Apple SecKeyGeneratePair to be exported
+     * and used outisde iOS, be it openSSL, PHP, Perl, whatever. By default Apple exports RSA public 
+     * keys in PKCS#1 format. If we want to use it on OpenSSL, PHP or almost anywhere outside iOS, we
+     * need to remove the PKCS#1 ASN.1 wrapping header and substitute it with a PKCS#8 ASN.1 header.
+     * Returns a DER representation of the key.
+     */
+    func exportRSAPublicKeyToDER(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> NSData {
+        // first we create the space for the ASN.1 header and decide about its length
+        let headerData = NSMutableData(length: kCryptoExportImportManagerASNHeaderLengthForRSA)!
+        let bitstringEncodingLength = bytesNeededForRepresentingInteger(rawPublicKeyBytes.length)
+        
+        // start building the ASN.1 header
+        let headerBuffer = UnsafeMutablePointer<UInt8>(headerData.mutableBytes)
+        headerBuffer[0] = kCryptoExportImportManagerASNHeaderSequenceMark // sequence start
+        
+        // total size (OID + encoding + key size) + 2 (marks)
+        let totalSize = kCryptoExportImportManagerRSAOIDHeaderLength + bitstringEncodingLength + rawPublicKeyBytes.length + 3
+        let totalSizebitstringEncodingLength = encodeASN1LengthParameter(totalSize, buffer: &(headerBuffer[1]))
+        
+        // bitstring header
+        let bitstringData = NSMutableData(length: kCryptoExportImportManagerASNHeaderLengthForRSA)!
+        let bitstringBuffer = UnsafeMutablePointer<UInt8>(bitstringData.mutableBytes)
+        bitstringBuffer[0] = kCryptoExportImportManagerASNHeaderBitstringMark // key length mark
+        let keyLengthBytesEncoded = encodeASN1LengthParameter(rawPublicKeyBytes.length+1, buffer: &(bitstringBuffer[1]))
+        bitstringBuffer[keyLengthBytesEncoded + 1] = 0x00
+        
+        // build DER key.
+        let derKey = NSMutableData(capacity: totalSize + totalSizebitstringEncodingLength)!
+        derKey.appendBytes(headerBuffer, length: totalSizebitstringEncodingLength + 1) // add sequence and total size
+        derKey.appendBytes(kCryptoExportImportManagerRSAOIDHeader, length: kCryptoExportImportManagerRSAOIDHeaderLength) // Add OID header
+        derKey.appendBytes(bitstringBuffer, length: keyLengthBytesEncoded + 2) // 0x03 + key bitstring length + 0x00
+        derKey.appendData(rawPublicKeyBytes) // public key raw data.
+        
+        return derKey
+    }
+
+    /**
+     * This function prepares a RSA public key generated with Apple SecKeyGeneratePair to be exported
+     * and used outisde iOS, be it openSSL, PHP, Perl, whatever. By default Apple exports RSA public
+     * keys in PKCS#1 format. If we want to use it on OpenSSL, PHP or almost anywhere outside iOS, we
+     * need to remove the PKCS#1 ASN.1 wrapping header and substitute it with a PKCS#8 ASN.1 header.
+     * Returns a DER representation of the key.
+     */
+    func exportRSAPublicKeyToPEM(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> String {
+        return PEMKeyFromDERKey(exportRSAPublicKeyToDER(rawPublicKeyBytes, keyType: keyType, keySize: keySize))
+    }
+
+    
+    /**
+     * Returns the number of bytes needed to represent an integer.
+     */
+    func bytesNeededForRepresentingInteger(number: Int) -> Int {
+        if number <= 0 { return 0 }
+        var i = 1
+        while (i < 8 && number >= (1 << (i * 8))) { i++ }
+        return i
+    }
+
+    /**
+     * Generates an ASN.1 length sequence for the given length. Modifies the buffer parameter by
+     * writing the ASN.1 sequence. The memory of buffer must be initialized (i.e: from an NSData).
+     * Returns the number of bytes used to write the sequence.
+     */
+    func encodeASN1LengthParameter(length: Int, buffer: UnsafeMutablePointer<UInt8>) -> Int {
+        if length < Int(kCryptoExportImportManagerExtendedLengthMark) {
+            buffer[0] = UInt8(length)
+            return 1 // just one byte was used, no need for length starting mark (0x80).
+        } else {
+            let extraBytes = bytesNeededForRepresentingInteger(length)
+            var currentLengthValue = length
+            
+            buffer[0] = kCryptoExportImportManagerExtendedLengthMark + UInt8(extraBytes)
+            for (var i = 0; i < extraBytes; i++) {
+                buffer[extraBytes - i] = UInt8(currentLengthValue & 0xff)
+                currentLengthValue = currentLengthValue >> 8
+            }
+            return extraBytes + 1 // 1 byte for the starting mark (0x80 + bytes used) + bytes used to encode length.
+        }
+    }
+
+    
+    /**
+     * This function prepares a EC public key generated with Apple SecKeyGeneratePair to be exported
+     * and used outisde iOS, be it openSSL, PHP, Perl, whatever. It basically adds the proper ASN.1
+     * header and codifies the result as valid base64 string, 64 characters split.
+     * Returns a DER representation of the key.
+     */
+    func exportECPublicKeyToDER(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> NSData {
+        print("Exporting EC raw key: \(rawPublicKeyBytes)")
+        // first retrieve the header with the OID for the proper key  curve.
+        let curveOIDHeader: [UInt8]
+        let curveOIDHeaderLen: Int
+        switch (keySize) {
+        case kCryptoExportImportManagerSecp256r1CurveLen:
+            curveOIDHeader = kCryptoExportImportManagerSecp256r1header
+            curveOIDHeaderLen = kCryptoExportImportManagerSecp256r1headerLen
+        case kCryptoExportImportManagerSecp384r1CurveLen:
+            curveOIDHeader = kCryptoExportImportManagerSecp384r1header
+            curveOIDHeaderLen = kCryptoExportImportManagerSecp384r1headerLen
+        case kCryptoExportImportManagerSecp521r1CurveLen:
+            curveOIDHeader = kCryptoExportImportManagerSecp521r1header
+            curveOIDHeaderLen = kCryptoExportImportManagerSecp521r1headerLen
+        default:
+            curveOIDHeader = []
+            curveOIDHeaderLen = 0
+        }
+        let data = NSMutableData(bytes: curveOIDHeader, length: curveOIDHeaderLen)
+        
+        // now add the raw data from the retrieved public key
+        data.appendData(rawPublicKeyBytes)
+        return data
+    }
+    
+    /**
+     * This function prepares a EC public key generated with Apple SecKeyGeneratePair to be exported
+     * and used outisde iOS, be it openSSL, PHP, Perl, whatever. It basically adds the proper ASN.1
+     * header and codifies the result as valid base64 string, 64 characters split.
+     * Returns a DER representation of the key.
+     */
+    func exportECPublicKeyToPEM(rawPublicKeyBytes: NSData, keyType: String, keySize: Int) -> String {
+        return PEMKeyFromDERKey(exportECPublicKeyToDER(rawPublicKeyBytes, keyType: keyType, keySize: keySize))
+    }
+    
+    /**
+     * This method transforms a DER encoded key to PEM format. It gets a Base64 representation of
+     * the key and then splits this base64 string in 64 character chunks. Then it wraps it in 
+     * BEGIN and END key tags.
+     */
+    func PEMKeyFromDERKey(data: NSData) -> String {
+        // base64 encode the result
+        let base64EncodedString = data.base64EncodedStringWithOptions([])
+
+        // split in lines of 64 characters.
+        var currentLine = ""
+        var resultString = kCryptoExportImportManagerPublicKeyInitialTag
+        var charCount = 0
+        for character in base64EncodedString.characters {
+            charCount++
+            currentLine.append(character)
+            if charCount == kCryptoExportImportManagerPublicNumberOfCharactersInALine {
+                resultString += currentLine + "\n"
+                charCount = 0
+                currentLine = ""
+            }
+        }
+        // final line (if any)
+        if currentLine.characters.count > 0 { resultString += currentLine + "\n" }
+        // final tag
+        resultString += kCryptoExportImportManagerPublicKeyFinalTag
+        return resultString
+    }
+    
+}

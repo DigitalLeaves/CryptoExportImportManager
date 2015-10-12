@@ -1,13 +1,111 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9058" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="bhB-qg-vD9">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9048"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Main Menu-->
+        <scene sceneID="QiV-5T-Vkx">
+            <objects>
+                <viewController title="Main Menu" id="gYr-47-40L" customClass="ViewController" customModule="CryptoLoadExternalCertificate" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MLy-Fs-Flt"/>
+                        <viewControllerLayoutGuide type="bottom" id="E53-wm-68w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yeU-Wy-8ez">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="iOS Key Export / Import Test" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utb-VX-k3A">
+                                <rect key="frame" x="28" y="28" width="544" height="26"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ts7-q6-Gla">
+                                <rect key="frame" x="213" y="283" width="174" height="46"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.54901960780000003" green="0.76078431369999999" blue="0.36470588240000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="174" id="QnF-yO-4oq"/>
+                                    <constraint firstAttribute="height" constant="46" id="fWY-QG-Smu"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Export public key Test"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="feI-x0-YtK"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="The import test will import a public RSA key contained in a certificate." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VpS-40-cfX">
+                                <rect key="frame" x="28" y="182" width="544" height="16"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="12"/>
+                                <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="The export test will export an EC public key generated with SecKeyGenerateKeyPair" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="aft-vU-QHK">
+                                <rect key="frame" x="28" y="264" width="544" height="16"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="12"/>
+                                <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chC-Kb-rGc">
+                                <rect key="frame" x="213" y="206" width="174" height="46"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="B7s-DB-OVF"/>
+                                    <constraint firstAttribute="width" constant="174" id="HN0-ur-YxD"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Import RSA Test"/>
+                                <connections>
+                                    <segue destination="9bS-QH-V5L" kind="show" id="TKP-U9-SFX"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lcU-Py-qAb">
+                                <rect key="frame" x="28" y="78" width="544" height="47"/>
+                                <animations/>
+                                <string key="text">Due to the obscure API and bad design of the Security framework in iOS, working with cryptography in a heterogeneous environment can be a nightmare, specially for importing and exporting public keys from iOS. CryptoExportImportManager tries to solve this problem.</string>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="12"/>
+                                <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ts7-q6-Gla" firstAttribute="centerX" secondItem="yeU-Wy-8ez" secondAttribute="centerX" id="0iV-jd-qUN"/>
+                            <constraint firstItem="VpS-40-cfX" firstAttribute="top" secondItem="lcU-Py-qAb" secondAttribute="bottom" constant="57" id="FeG-CH-51e"/>
+                            <constraint firstItem="lcU-Py-qAb" firstAttribute="trailing" secondItem="utb-VX-k3A" secondAttribute="trailing" id="J6u-Tj-hhO"/>
+                            <constraint firstItem="Ts7-q6-Gla" firstAttribute="top" secondItem="aft-vU-QHK" secondAttribute="bottom" constant="3" id="JLI-d2-aKC"/>
+                            <constraint firstItem="lcU-Py-qAb" firstAttribute="leading" secondItem="utb-VX-k3A" secondAttribute="leading" id="NX3-2a-3xD"/>
+                            <constraint firstItem="utb-VX-k3A" firstAttribute="leading" secondItem="yeU-Wy-8ez" secondAttribute="leadingMargin" constant="8" id="PZe-bx-Sic"/>
+                            <constraint firstItem="aft-vU-QHK" firstAttribute="top" secondItem="chC-Kb-rGc" secondAttribute="bottom" constant="12" id="U6k-0H-1bU"/>
+                            <constraint firstItem="utb-VX-k3A" firstAttribute="top" secondItem="MLy-Fs-Flt" secondAttribute="bottom" constant="8" id="UkJ-Ha-ki1"/>
+                            <constraint firstItem="chC-Kb-rGc" firstAttribute="top" secondItem="VpS-40-cfX" secondAttribute="bottom" constant="8" id="WIz-Gi-Age"/>
+                            <constraint firstItem="VpS-40-cfX" firstAttribute="trailing" secondItem="lcU-Py-qAb" secondAttribute="trailing" id="XYL-tn-hTr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="utb-VX-k3A" secondAttribute="trailing" constant="8" id="XqG-Sm-yEe"/>
+                            <constraint firstItem="aft-vU-QHK" firstAttribute="leading" secondItem="VpS-40-cfX" secondAttribute="leading" id="Z4C-mP-6FF"/>
+                            <constraint firstItem="aft-vU-QHK" firstAttribute="trailing" secondItem="VpS-40-cfX" secondAttribute="trailing" id="aVi-Js-0oI"/>
+                            <constraint firstItem="lcU-Py-qAb" firstAttribute="top" secondItem="utb-VX-k3A" secondAttribute="bottom" constant="24" id="d1D-ds-7Ej"/>
+                            <constraint firstItem="chC-Kb-rGc" firstAttribute="centerX" secondItem="yeU-Wy-8ez" secondAttribute="centerX" id="hep-Dp-88X"/>
+                            <constraint firstItem="VpS-40-cfX" firstAttribute="leading" secondItem="lcU-Py-qAb" secondAttribute="leading" id="rnm-Qa-iRE"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Main Menu" id="syL-rk-KIh"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Xk-Wc-bSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="406" y="325"/>
+        </scene>
+        <!--Export test-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Export test" id="BYZ-38-t0r" customClass="ExportViewController" customModule="CryptoLoadExternalCertificate" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +113,199 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export EC public keys from iOS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRH-Yk-R9v">
+                                <rect key="frame" x="28" y="72" width="544" height="26"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This test will generate a pair of EC keys with SecKeyGeneratePair and will export the EC public key to a standard format " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PMd-az-o4S">
+                                <rect key="frame" x="28" y="122" width="544" height="31.5"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="12"/>
+                                <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="unb-j0-VPs">
+                                <rect key="frame" x="28" y="161.5" width="544" height="289.5"/>
+                                <animations/>
+                                <string key="text">Click on "Export key" to generate a key pair. The raw bytes retrieved from the public key will be wrapped in a valid ASN.1 object and shown.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vio-pA-2nH">
+                                <rect key="frame" x="28" y="534" width="174" height="46"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.54901960780000003" green="0.76078431369999999" blue="0.36470588240000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="174" id="76p-Lx-Aav"/>
+                                    <constraint firstAttribute="height" constant="46" id="mrX-Jn-Lnn"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Export key"/>
+                                <connections>
+                                    <action selector="generateAndExportPublicKey:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lBC-Hx-FDK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56V-M6-E7f">
+                                <rect key="frame" x="398" y="534" width="174" height="46"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.86274509799999999" green="0.26274509800000001" blue="0.27058823529999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="174" id="HsL-It-W7p"/>
+                                    <constraint firstAttribute="height" constant="46" id="pTw-oE-QPA"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Delete key"/>
+                                <connections>
+                                    <action selector="deleteGeneratedKey:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iJ3-iz-1fp"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This test will generate a pair of EC keys with SecKeyGeneratePair and will export the EC public key to a standard format " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Jx-2K-Ouk">
+                                <rect key="frame" x="28" y="459" width="544" height="31.5"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="12"/>
+                                <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2X9-LN-UOO">
+                                <rect key="frame" x="191.5" y="498" width="217" height="29"/>
+                                <animations/>
+                                <segments>
+                                    <segment title="EC (secp256r1)"/>
+                                    <segment title="RSA (2048)"/>
+                                </segments>
+                            </segmentedControl>
+                        </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="dRH-Yk-R9v" secondAttribute="trailing" constant="8" id="7Q8-Ma-yKs"/>
+                            <constraint firstItem="unb-j0-VPs" firstAttribute="trailing" secondItem="PMd-az-o4S" secondAttribute="trailing" id="GoW-GU-1e2"/>
+                            <constraint firstItem="dRH-Yk-R9v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="8" id="KYP-dY-A56"/>
+                            <constraint firstItem="2X9-LN-UOO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KsO-Kp-dC4"/>
+                            <constraint firstItem="PMd-az-o4S" firstAttribute="top" secondItem="dRH-Yk-R9v" secondAttribute="bottom" constant="24" id="LmT-Bg-OUg"/>
+                            <constraint firstItem="PMd-az-o4S" firstAttribute="trailing" secondItem="dRH-Yk-R9v" secondAttribute="trailing" id="O58-Jl-amv"/>
+                            <constraint firstItem="56V-M6-E7f" firstAttribute="trailing" secondItem="unb-j0-VPs" secondAttribute="trailing" id="Otf-gZ-Ijr"/>
+                            <constraint firstItem="dRH-Yk-R9v" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="QsY-wt-g8E"/>
+                            <constraint firstItem="dRH-Yk-R9v" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VXb-pU-Fxc"/>
+                            <constraint firstItem="8Jx-2K-Ouk" firstAttribute="leading" secondItem="unb-j0-VPs" secondAttribute="leading" id="WZZ-tn-uoQ"/>
+                            <constraint firstItem="8Jx-2K-Ouk" firstAttribute="top" secondItem="unb-j0-VPs" secondAttribute="bottom" constant="8" id="Wut-me-rdD"/>
+                            <constraint firstItem="56V-M6-E7f" firstAttribute="centerY" secondItem="vio-pA-2nH" secondAttribute="centerY" id="YGn-f8-GId"/>
+                            <constraint firstItem="vio-pA-2nH" firstAttribute="leading" secondItem="unb-j0-VPs" secondAttribute="leading" id="eFi-kx-GLD"/>
+                            <constraint firstItem="unb-j0-VPs" firstAttribute="top" secondItem="PMd-az-o4S" secondAttribute="bottom" constant="8" id="hD4-wT-jNA"/>
+                            <constraint firstItem="8Jx-2K-Ouk" firstAttribute="trailing" secondItem="unb-j0-VPs" secondAttribute="trailing" id="iF8-r5-Haj"/>
+                            <constraint firstItem="unb-j0-VPs" firstAttribute="leading" secondItem="PMd-az-o4S" secondAttribute="leading" id="mpd-0y-Cu8"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vio-pA-2nH" secondAttribute="bottom" constant="20" id="nTB-kf-K8q"/>
+                            <constraint firstItem="vio-pA-2nH" firstAttribute="top" secondItem="2X9-LN-UOO" secondAttribute="bottom" constant="8" id="ovX-EY-64z"/>
+                            <constraint firstItem="PMd-az-o4S" firstAttribute="leading" secondItem="dRH-Yk-R9v" secondAttribute="leading" id="t9d-R6-cNH"/>
+                            <constraint firstItem="2X9-LN-UOO" firstAttribute="top" secondItem="8Jx-2K-Ouk" secondAttribute="bottom" constant="7.5" id="v9s-Mc-bEA"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="wkY-nd-xr6"/>
+                    <connections>
+                        <outlet property="keyTypeSegment" destination="2X9-LN-UOO" id="dTf-L4-bCL"/>
+                        <outlet property="textView" destination="unb-j0-VPs" id="Dci-bB-uZJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1342" y="758"/>
+        </scene>
+        <!--Import test-->
+        <scene sceneID="HG2-eo-9HR">
+            <objects>
+                <viewController title="Import test" id="9bS-QH-V5L" customClass="ImportViewController" customModule="CryptoLoadExternalCertificate" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6Ol-F9-xMU"/>
+                        <viewControllerLayoutGuide type="bottom" id="VL3-if-f7x"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UsB-h1-FRp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Importing external RSA public keys in iOS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQh-h5-ABP">
+                                <rect key="frame" x="28" y="72" width="544" height="26"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This test will import an RSA public key contained in a public certificate into iOS." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xUL-yE-n6o">
+                                <rect key="frame" x="28" y="122" width="544" height="16"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="12"/>
+                                <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Click on &quot;Import key&quot; to import the public key from the certificate contained in the file certificate.der (in DER format)" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3CY-wQ-1HB">
+                                <rect key="frame" x="28" y="146" width="544" height="380"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zr6-6A-G33">
+                                <rect key="frame" x="213" y="534" width="174" height="46"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="174" id="hs0-S7-0Bd"/>
+                                    <constraint firstAttribute="height" constant="46" id="kVD-8g-NDs"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Import key"/>
+                                <connections>
+                                    <action selector="importKey:" destination="9bS-QH-V5L" eventType="touchUpInside" id="ySh-JO-S8C"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xUL-yE-n6o" firstAttribute="trailing" secondItem="wQh-h5-ABP" secondAttribute="trailing" id="1oM-39-bCk"/>
+                            <constraint firstItem="wQh-h5-ABP" firstAttribute="top" secondItem="6Ol-F9-xMU" secondAttribute="bottom" constant="8" id="3Uh-yb-95a"/>
+                            <constraint firstItem="zr6-6A-G33" firstAttribute="centerX" secondItem="UsB-h1-FRp" secondAttribute="centerX" id="BQA-cZ-4QW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wQh-h5-ABP" secondAttribute="trailing" constant="8" id="P01-YB-zau"/>
+                            <constraint firstItem="xUL-yE-n6o" firstAttribute="top" secondItem="wQh-h5-ABP" secondAttribute="bottom" constant="24" id="ZaE-oT-rmL"/>
+                            <constraint firstItem="VL3-if-f7x" firstAttribute="top" secondItem="zr6-6A-G33" secondAttribute="bottom" constant="20" id="aHV-eK-a2W"/>
+                            <constraint firstItem="xUL-yE-n6o" firstAttribute="leading" secondItem="wQh-h5-ABP" secondAttribute="leading" id="dDy-MF-ReI"/>
+                            <constraint firstItem="3CY-wQ-1HB" firstAttribute="trailing" secondItem="xUL-yE-n6o" secondAttribute="trailing" id="mtr-nw-gzG"/>
+                            <constraint firstItem="wQh-h5-ABP" firstAttribute="leading" secondItem="UsB-h1-FRp" secondAttribute="leadingMargin" constant="8" id="nBk-1y-3L5"/>
+                            <constraint firstItem="wQh-h5-ABP" firstAttribute="centerX" secondItem="UsB-h1-FRp" secondAttribute="centerX" id="qIb-IP-1id"/>
+                            <constraint firstItem="zr6-6A-G33" firstAttribute="top" secondItem="3CY-wQ-1HB" secondAttribute="bottom" constant="8" id="wOK-w9-yYz"/>
+                            <constraint firstItem="3CY-wQ-1HB" firstAttribute="leading" secondItem="xUL-yE-n6o" secondAttribute="leading" id="wma-wb-ikU"/>
+                            <constraint firstItem="3CY-wQ-1HB" firstAttribute="top" secondItem="xUL-yE-n6o" secondAttribute="bottom" constant="8" id="yM0-Sp-zc8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="gzH-4F-1x6"/>
+                    <connections>
+                        <outlet property="textView" destination="3CY-wQ-1HB" id="Qye-fB-6uc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Bw-tV-7lD" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1342" y="-19"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xE1-p7-UwY">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bhB-qg-vD9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="e6x-y9-SB5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="gYr-47-40L" kind="relationship" relationship="rootViewController" id="sOL-qh-wuJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eKc-nK-BTK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-406" y="325"/>
         </scene>
     </scenes>
 </document>
