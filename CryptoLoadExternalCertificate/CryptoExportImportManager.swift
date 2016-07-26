@@ -82,7 +82,7 @@ private let kCryptoExportImportManagerPublicNumberOfCharactersInALine = 64
  * CryptoCertificateImportManager is in charge of importing a certificate and obtaining a valid key 
  * reference to use in any of SecKey operations (SecKeyEncrypt, SecKeyRawVerify...).
  * As far as I know, any other way of importing and using public keys from the outside is not
- * recommended: https://devforums.apple.com/message/301532#301532
+ * advised: https://devforums.apple.com/message/301532#301532
  */
 class CryptoExportImportManager: NSObject {
     // MARK: - Import methods.
