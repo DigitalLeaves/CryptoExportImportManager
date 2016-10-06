@@ -41,44 +41,44 @@ class ExportViewController: UIViewController {
         }
     }
 
-    @IBAction func generateAndExportPublicKey(sender: AnyObject) {
-        self.view.userInteractionEnabled = false
+    @IBAction func generateAndExportPublicKey(_ sender: AnyObject) {
+        self.view.isUserInteractionEnabled = false
         self.textView.text = "Trying to get public key data from Keychain first..."
         let keyType = getKeyTypeFromSegmentedControl()
         if let publicKeyData = getPublicKeyData(kExportKeyTag + keyType) {
-            self.textView.text = self.textView.text.stringByAppendingString("Success!\nPublic key raw bytes: \(publicKeyData)\n")
+            self.textView.text = self.textView.text + "Success!\nPublic key raw bytes: \(publicKeyData.hexDescription)\n\n"
             self.exportKeyFromRawBytesAndShowInTextView(publicKeyData)
-            self.view.userInteractionEnabled = true
+            self.view.isUserInteractionEnabled = true
         } else {
-            self.textView.text = self.textView.text.stringByAppendingString("Failed! Will try to generate keypair...\n")
+            self.textView.text = self.textView.text + "Failed! Will try to generate keypair...\n"
             createSecureKeyPair(kExportKeyTag + keyType) { (success, pubKeyData) -> Void in
                 if success && pubKeyData != nil {
-                    self.textView.text = self.textView.text.stringByAppendingString("Success!\nPublic key raw bytes:\(pubKeyData!)\n")
+                    self.textView.text = self.textView.text + "Success!\nPublic key raw bytes:\(pubKeyData!)\n"
                     self.exportKeyFromRawBytesAndShowInTextView(pubKeyData!)
                 } else {
-                    self.textView.text = self.textView.text.stringByAppendingString("Oups! I was unable to generate the keypair to test the export functionality.")
+                    self.textView.text = self.textView.text + "Oups! I was unable to generate the keypair to test the export functionality."
                 }
-                self.view.userInteractionEnabled = true
+                self.view.isUserInteractionEnabled = true
             }
         }
     }
     
-    func exportKeyFromRawBytesAndShowInTextView(rawBytes: NSData) {
+    func exportKeyFromRawBytesAndShowInTextView(_ rawBytes: Data) {
         let keyType = getKeyTypeFromSegmentedControl()
         let keySize = getKeyLengthFromSegmentedControl()
         let exportImportManager = CryptoExportImportManager()
         if let exportableDERKey = exportImportManager.exportPublicKeyToDER(rawBytes, keyType: keyType, keySize: keySize) {
-            self.textView.text = self.textView.text.stringByAppendingString("Exportable key in DER format:\n\(exportableDERKey)")
-            print("Exportable key in DER format:\n\(exportableDERKey)")
+            self.textView.text = self.textView.text + "Exportable key in DER format:\n\(exportableDERKey.hexDescription)\n\n"
+            print("Exportable key in DER format:\n\(exportableDERKey.hexDescription)\n")
             let exportablePEMKey = exportImportManager.PEMKeyFromDERKey(exportableDERKey)
-            self.textView.text = self.textView.text.stringByAppendingString("Exportable key in PEM format:\n\(exportablePEMKey)")
-            print("Exportable key in PEM format:\n\(exportablePEMKey)")
+            self.textView.text = self.textView.text + "Exportable key in PEM format:\n\(exportablePEMKey)\n\n"
+            print("Exportable key in PEM format:\n\(exportablePEMKey)\n")
         } else {
-            self.textView.text = self.textView.text.stringByAppendingString("Unable to generate DER key from raw bytes.")
+            self.textView.text = self.textView.text + "Unable to generate DER key from raw bytes."
         }
     }
     
-    @IBAction func deleteGeneratedKey(sender: AnyObject) {
+    @IBAction func deleteGeneratedKey(_ sender: AnyObject) {
         self.deleteSecureKeyPair(kExportKeyTag + getKeyTypeFromSegmentedControl()) { (success) -> Void in
             self.textView.text = success ? "Successfully deleted keypair" : "Error deleting keypair. Maybe the key didn't exist?"
         }
@@ -87,72 +87,72 @@ class ExportViewController: UIViewController {
     
     // MARK: - Auxiliary key generation and management methods
     
-    func createSecureKeyPair(keyTag: String, completion: ((success: Bool, pubKeyData: NSData?) -> Void)? = nil) {
+    func createSecureKeyPair(_ keyTag: String, completion: ((_ success: Bool, _ pubKeyData: Data?) -> Void)? = nil) {
         // private key parameters
         let privateKeyParams: [String: AnyObject] = [
-            kSecAttrIsPermanent as String: true,
-            kSecAttrApplicationTag as String: keyTag,
+            kSecAttrIsPermanent as String: true as AnyObject,
+            kSecAttrApplicationTag as String: keyTag as AnyObject,
         ]
         
         // private key parameters
         let publicKeyParams: [String: AnyObject] = [
-            kSecAttrApplicationTag as String: keyTag,
-            kSecAttrIsPermanent as String: true
+            kSecAttrApplicationTag as String: keyTag as AnyObject,
+            kSecAttrIsPermanent as String: true as AnyObject
         ]
         
         // global parameters for our key generation
         let parameters: [String: AnyObject] = [
-            kSecAttrKeyType as String:          getKeyTypeFromSegmentedControl(),
-            kSecAttrKeySizeInBits as String:    getKeyLengthFromSegmentedControl(),
-            kSecPublicKeyAttrs as String:       publicKeyParams,
-            kSecPrivateKeyAttrs as String:      privateKeyParams,
+            kSecAttrKeyType as String:          getKeyTypeFromSegmentedControl() as AnyObject,
+            kSecAttrKeySizeInBits as String:    getKeyLengthFromSegmentedControl() as AnyObject,
+            kSecPublicKeyAttrs as String:       publicKeyParams as AnyObject,
+            kSecPrivateKeyAttrs as String:      privateKeyParams as AnyObject,
         ]
         
         // asynchronously generate the key pair and call the completion block
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-            var pubKey, privKey: SecKeyRef?
-            let status = SecKeyGeneratePair(parameters, &pubKey, &privKey)
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { () -> Void in
+            var pubKey, privKey: SecKey?
+            let status = SecKeyGeneratePair(parameters as CFDictionary, &pubKey, &privKey)
             if status == errSecSuccess {
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     print("Successfully generated keypair!\nPrivate key: \(privKey)\nPublic key: \(pubKey)")
                     let publicKeyData = self.getPublicKeyData(kExportKeyTag + self.getKeyTypeFromSegmentedControl())
-                    completion?(success: true, pubKeyData: publicKeyData)
+                    completion?(true, publicKeyData)
                 })
             } else {
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     print("Error generating keypair: \(status)")
-                    completion?(success: false, pubKeyData: nil)
+                    completion?(false, nil)
                 })
             }
         }
     }
     
-    private func getPublicKeyData(keyTag: String) -> NSData? {
+    fileprivate func getPublicKeyData(_ keyTag: String) -> Data? {
         let parameters = [
             kSecClass as String: kSecClassKey,
             kSecAttrKeyType as String: getKeyTypeFromSegmentedControl(),
             kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
             kSecAttrApplicationTag as String: keyTag,
             kSecReturnData as String: true
-        ]
+        ] as [String : Any]
         var data: AnyObject?
-        let status = SecItemCopyMatching(parameters, &data)
+        let status = SecItemCopyMatching(parameters as CFDictionary, &data)
         if status == errSecSuccess {
-            return data as? NSData
+            return data as? Data
         } else { print("Error getting public key data: \(status)"); return nil }
     }
     
-    func deleteSecureKeyPair(keyTag: String, completion: ((success: Bool) -> Void)?) {
+    func deleteSecureKeyPair(_ keyTag: String, completion: ((_ success: Bool) -> Void)?) {
         // private query dictionary
         let query = [
             kSecClass as String: kSecClassKey,
             kSecAttrKeyType as String: getKeyTypeFromSegmentedControl(),
             kSecAttrApplicationTag as String: keyTag,
-        ]
+        ] as [String : Any]
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-            let status = SecItemDelete(query) // delete key
-            dispatch_async(dispatch_get_main_queue(), { completion?(success: status == errSecSuccess) })
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { () -> Void in
+            let status = SecItemDelete(query as CFDictionary) // delete key
+            DispatchQueue.main.async(execute: { completion?(status == errSecSuccess) })
         }
     }
 }

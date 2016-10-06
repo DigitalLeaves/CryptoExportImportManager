@@ -16,6 +16,7 @@
 		668B94E21BC3D19F00913B83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 668B94E01BC3D19F00913B83 /* LaunchScreen.storyboard */; };
 		66B460A61BCA9886000FFCCE /* ImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B460A51BCA9886000FFCCE /* ImportViewController.swift */; };
 		66B460A81BCA988E000FFCCE /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B460A71BCA988E000FFCCE /* ExportViewController.swift */; };
+		66E9AEAB1DA67A8B00863AA6 /* Data+HexDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E9AEAA1DA67A8B00863AA6 /* Data+HexDescription.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,8 @@
 		668B94E31BC3D19F00913B83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66B460A51BCA9886000FFCCE /* ImportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportViewController.swift; sourceTree = "<group>"; };
 		66B460A71BCA988E000FFCCE /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
+		66E9AEA81DA6789100863AA6 /* CryptoLoadExternalCertificate.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CryptoLoadExternalCertificate.entitlements; sourceTree = "<group>"; };
+		66E9AEAA1DA67A8B00863AA6 /* Data+HexDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+HexDescription.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,7 @@
 		668B94D61BC3D19F00913B83 /* CryptoLoadExternalCertificate */ = {
 			isa = PBXGroup;
 			children = (
+				66E9AEA91DA67A7700863AA6 /* Categories and Extensions */,
 				66B460A41BCA9853000FFCCE /* Model */,
 				66B460A31BCA9844000FFCCE /* Storyboards */,
 				66B460A21BCA9829000FFCCE /* App */,
@@ -84,6 +88,7 @@
 		66B460A11BCA97C7000FFCCE /* Resources & Assets */ = {
 			isa = PBXGroup;
 			children = (
+				66E9AEA81DA6789100863AA6 /* CryptoLoadExternalCertificate.entitlements */,
 				6686BBC71BC3F06D00E9D1CA /* certificate.der */,
 				668B94DE1BC3D19F00913B83 /* Assets.xcassets */,
 			);
@@ -116,6 +121,14 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		66E9AEA91DA67A7700863AA6 /* Categories and Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				66E9AEAA1DA67A8B00863AA6 /* Data+HexDescription.swift */,
+			);
+			name = "Categories and Extensions";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -142,11 +155,18 @@
 		668B94CC1BC3D19F00913B83 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Ignacio Nieto Carvajal";
 				TargetAttributes = {
 					668B94D31BC3D19F00913B83 = {
 						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = 97P9DZHP78;
+						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -189,6 +209,7 @@
 			files = (
 				6686BBC41BC3E2A000E9D1CA /* CryptoExportImportManager.swift in Sources */,
 				668B94DA1BC3D19F00913B83 /* ViewController.swift in Sources */,
+				66E9AEAB1DA67A8B00863AA6 /* Data+HexDescription.swift in Sources */,
 				668B94D81BC3D19F00913B83 /* AppDelegate.swift in Sources */,
 				66B460A61BCA9886000FFCCE /* ImportViewController.swift in Sources */,
 				66B460A81BCA988E000FFCCE /* ExportViewController.swift in Sources */,
@@ -230,8 +251,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -274,8 +297,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -294,6 +319,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -302,10 +328,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CryptoLoadExternalCertificate/CryptoLoadExternalCertificate.entitlements;
+				DEVELOPMENT_TEAM = 97P9DZHP78;
 				INFOPLIST_FILE = CryptoLoadExternalCertificate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Ignacio-Nieto-Carvajal.CryptoLoadExternalCertificate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -313,10 +342,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CryptoLoadExternalCertificate/CryptoLoadExternalCertificate.entitlements;
+				DEVELOPMENT_TEAM = 97P9DZHP78;
 				INFOPLIST_FILE = CryptoLoadExternalCertificate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Ignacio-Nieto-Carvajal.CryptoLoadExternalCertificate";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

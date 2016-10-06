@@ -24,15 +24,15 @@ class ImportViewController: UIViewController {
     }
     
 
-    @IBAction func importKey(sender: AnyObject) {
+    @IBAction func importKey(_ sender: AnyObject) {
         // first try to get the path for certificate.der
-        guard let certPath = NSBundle.mainBundle().pathForResource("certificate", ofType: "der") else {
+        guard let certPath = Bundle.main.path(forResource: "certificate", ofType: "der") else {
             textView.text = "An error happened while reading the certificate file. Unable to get path for certificate.der"
             return
         }
         
         // now get the data from the certificate file
-        guard let certData = NSData(contentsOfFile: certPath) else {
+        guard let certData = try? Data(contentsOf: URL(fileURLWithPath: certPath)) else {
             textView.text = "An error happened while reading the certificate file. Unable to read certificate.der"
             return
         }
