@@ -127,7 +127,7 @@ class ExportViewController: UIViewController {
         }
     }
     
-    fileprivate func getPublicKeyData(_ keyTag: String) -> Data? {
+    func getPublicKeyData(_ keyTag: String) -> Data? {
         let parameters = [
             kSecClass as String: kSecClassKey,
             kSecAttrKeyType as String: getKeyTypeFromSegmentedControl(),
