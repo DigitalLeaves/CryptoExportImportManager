@@ -111,7 +111,7 @@ class CryptoExportImportManager: NSObject {
         
         // lastly, once evaluated, we can export the public key from the certificate leaf.
         let publicKeyRef = SecTrustCopyPublicKey(secTrust!)
-        print("Got public key reference: \(publicKeyRef)")
+        print("Got public key reference: \(String(describing: publicKeyRef))")
         return publicKeyRef
     }
     
@@ -153,30 +153,22 @@ class CryptoExportImportManager: NSObject {
      */
     func exportRSAPublicKeyToDER(_ rawPublicKeyBytes: Data, keyType: String, keySize: Int) -> Data {
         // first we create the space for the ASN.1 header and decide about its length
-        var headerData = Data(count: kCryptoExportImportManagerASNHeaderLengthForRSA)
         let bitstringEncodingLength = bytesNeededForRepresentingInteger(rawPublicKeyBytes.count)
         
         // start building the ASN.1 header
-        let headerBuffer = headerData.withUnsafeMutableBytes {
-            (bytes: UnsafeMutablePointer<UInt8>) -> UnsafeMutablePointer<UInt8> in
-            bytes[0] = kCryptoExportImportManagerASNHeaderSequenceMark // sequence start
-            return bytes
-        }
+        var headerBuffer = [UInt8](repeating: 0, count: kCryptoExportImportManagerASNHeaderLengthForRSA);
+        headerBuffer[0] = kCryptoExportImportManagerASNHeaderSequenceMark;
         
         // total size (OID + encoding + key size) + 2 (marks)
         let totalSize = kCryptoExportImportManagerRSAOIDHeaderLength + bitstringEncodingLength + rawPublicKeyBytes.count + 3
         let totalSizebitstringEncodingLength = encodeASN1LengthParameter(totalSize, buffer: &(headerBuffer[1]))
         
         // bitstring header
-        var bitstringData = Data(count: kCryptoExportImportManagerASNHeaderLengthForRSA)
         var keyLengthBytesEncoded = 0
-        let bitstringBuffer = bitstringData.withUnsafeMutableBytes {
-            (bytes: UnsafeMutablePointer<UInt8>) -> UnsafeMutablePointer<UInt8> in
-            bytes[0] = kCryptoExportImportManagerASNHeaderBitstringMark // key length mark
-            keyLengthBytesEncoded = encodeASN1LengthParameter(rawPublicKeyBytes.count+1, buffer: &(bytes[1]))
-            bytes[keyLengthBytesEncoded + 1] = 0x00
-            return bytes
-        }
+        var bitstringBuffer = [UInt8](repeating: 0, count: kCryptoExportImportManagerASNHeaderLengthForRSA);
+        bitstringBuffer[0] = kCryptoExportImportManagerASNHeaderBitstringMark
+        keyLengthBytesEncoded = encodeASN1LengthParameter(rawPublicKeyBytes.count+1, buffer: &(bitstringBuffer[1]))
+        bitstringBuffer[keyLengthBytesEncoded + 1] = 0x00
         
         // build DER key.
         var derKey = Data(capacity: totalSize + totalSizebitstringEncodingLength)
@@ -287,7 +279,7 @@ class CryptoExportImportManager: NSObject {
         var currentLine = ""
         var resultString = kCryptoExportImportManagerPublicKeyInitialTag
         var charCount = 0
-        for character in base64EncodedString.characters {
+        for character in base64EncodedString {
             charCount += 1
             currentLine.append(character)
             if charCount == kCryptoExportImportManagerPublicNumberOfCharactersInALine {
@@ -297,7 +289,7 @@ class CryptoExportImportManager: NSObject {
             }
         }
         // final line (if any)
-        if currentLine.characters.count > 0 { resultString += currentLine + "\n" }
+        if currentLine.count > 0 { resultString += currentLine + "\n" }
         // final tag
         resultString += kCryptoExportImportManagerPublicKeyFinalTag
         return resultString
